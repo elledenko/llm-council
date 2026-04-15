@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import Stage1 from './Stage1';
 import Stage2 from './Stage2';
 import Stage3 from './Stage3';
+import { downloadConversation } from '../lib/exportConversation';
 import './ChatInterface.css';
 
 export default function ChatInterface({
@@ -48,8 +49,22 @@ export default function ChatInterface({
     );
   }
 
+  const hasMessages = conversation.messages.length > 0;
+
   return (
     <div className="chat-interface">
+      <div className="chat-header">
+        <div className="chat-header-title">{conversation.title || 'Conversation'}</div>
+        <button
+          type="button"
+          className="export-button"
+          onClick={() => downloadConversation(conversation)}
+          disabled={!hasMessages}
+          title={hasMessages ? 'Export conversation as Markdown' : 'Nothing to export yet'}
+        >
+          Export
+        </button>
+      </div>
       <div className="messages-container">
         {conversation.messages.length === 0 ? (
           <div className="empty-state">
